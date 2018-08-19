@@ -1,0 +1,5 @@
+#checkboard:
+url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAABlBMV…AyAAAAAXRSTlMAQObYZgAAAA9JREFUCNdj+M+AHeGQAAB+vw/x4MPOfwAAAABJRU5ErkJggg==)
+
+#noise:
+url(http://api.thumbr.it/whitenoise-100x100.png?background=eeeeee&noise=b0b0b0&density=99'
