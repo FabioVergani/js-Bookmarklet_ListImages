@@ -13,30 +13,52 @@
 						let m=d.images,i=m.length;
 						if(i!==0){
 							m=[...m];
-							let a=[],b=[];
-							while(i!==0){const e=m[--i],w=e.naturalWidth,h=e.naturalHeight;if(w!==0 && h!==0){const x=(w<128||h<240)?b:a;x[x.length]=[w,h,e.src]}};
-							//svg?
-							i=a.length+b.length;
+							let a=[],b=[],c=[];
+							while(i!==0){
+								const e=m[--i],w=e.naturalWidth,h=e.naturalHeight;
+								if(w!==0 && h!==0){
+									const s=e.src,v=s.substr(s.lastIndexOf('.')+1)==='svg';
+									x=v?c:(w<128||h<240)?b:a;
+									x[x.length]=[w,h,s,v]
+								}
+							};
+							//embedsvg
+							for(let e,g=c,i=0,m=d.getElementsByTagName('svg'),l=m.length;i<l;++i){
+								e=m[i];
+								const b=e.getBBox();
+								g[g.length]=[b.width,b.height,'data:image/svg+xml;utf8,'+e.outerHTML,true]
+							};
+
+							//bgImage?
+							i=a.length+b.length+c.length;
 							if(i!==0){
 								const zip=o=>{
 									let e=o.target;
 									e=e.ownerDocument.defaultView;
 									e.alert('zip2do')
 								},
-								c=(e,s)=>e.appendChild(d.createElement(s)),
-								m=c(d.createDocumentFragment(),'main');
+								n=(e,s)=>e.appendChild(d.createElement(s)),
+								m=n(d.createDocumentFragment(),'main');
 								m.total=i;
 								i=(x,f=false)=>{
 									let l=x.length;
 									if(l!==0){
 										if(f){f(l,x)};
-										let s=c(m,'section'),e=c(c(s,'p'),'b');
+										let s=n(m,'section'),e=n(n(s,'p'),'b');
 										e.innerText='\uD83D\uDCBE:\u2009';
 										e.addEventListener('click',zip);
-										s=c(s,'span');
-										e=s.label=c(e,'big');
+										s=n(s,'span');
+										e=s.label=n(e,'big');
 										e.innerText=s.items=l;
-										do{e=c(s,'img');t=x[--l];x.length=l;e.title=t[0]+'\u00D7'+t[1];e.src=t[2]}while(l!==0)
+										if(l===1){e.style.display='none'};
+										do{
+											e=n(s,'img');t=x[--l];
+											x.length=l;
+											const w=t[0];
+											e.title=w+'\u00D7'+t[1];
+											e.src=t[2];
+											if(t[3]){e.style.maxWidth=w+'px'};
+										}while(l!==0)
 									}
 								};
 								i(a);
@@ -49,13 +71,15 @@
 									e.focus()
 								};
 								i(b,(i,x)=>{if(i>1){x.sort((a,b)=>a[0]<b[0]);x.sort((a,b)=>a[1]>b[1])}});
+								i(c);
+								c=null;
 								//..
 								i=opened;
 								if(i && i.closed!==true){
 									b=i.document.body;b.style.display='none';while(i=b.lastChild){i.remove()};
 									i=o=>{a(o.target)}
 								}else{
-									once(i=opened=w.open(),'DOMContentLoaded',o=>{c(o.target.head,'style').innerText=S});
+									once(i=opened=w.open(),'DOMContentLoaded',o=>{n(o.target.head,'style').innerText=S});
 									i.addEventListener('beforeunload',()=>{opened=null});
 									i.ListImagesResult=true;
 									i=o=>{
